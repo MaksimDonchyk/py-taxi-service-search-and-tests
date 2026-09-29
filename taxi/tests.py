@@ -66,8 +66,9 @@ class PrivateTaxiSearchAndFeatureTests(TestCase):
     def test_driver_search_by_username(self):
         response = self.client.get(DriversListView, {"username": "speedy"})
         self.assertEqual(response.status_code, 200)
-        # Перевіряємо, що шуканий водій присутній у результатах
-        self.assertContains(response, self.driver2.username)
+
+        self.assertIn(self.driver2, response.context["driver_list"])
+        self.assertNotIn(self.user, response.context["driver_list"])
 
     def test_manufacturer_search_by_name(self):
         response = self.client.get(ManufacturersListView, {"name": "toyota"})
